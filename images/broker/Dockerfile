@@ -29,5 +29,7 @@ RUN wget http://archive.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_${SCALA_VER
 # And we provide custom start up scripts
 ADD start_kafka /
 ADD start_zookeeper /
-RUN chmod +x start_kafka start_zookeeper \
-    && mkdir /logs/
+ADD create_topic /
+
+# Create structures required by our automation
+RUN mkdir /logs/

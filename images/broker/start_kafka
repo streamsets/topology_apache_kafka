@@ -11,4 +11,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-/kafka/bin/kafka-server-start.sh /kafka/config/server.properties &
+/kafka/bin/kafka-server-start.sh /kafka.properties > /logs/kafka.log &

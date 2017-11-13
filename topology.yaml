@@ -35,3 +35,7 @@ start args:
         default: 2.11
         help: Scala version to use
         metavar: ver
+    --topics:
+        default: test
+        help: Comma-separated list of topics that should be auto-created
+        metavar: topic1,topic2
