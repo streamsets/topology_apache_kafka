@@ -73,10 +73,10 @@ def main(args):
     cluster.start(args.network, pull_images=args.always_pull)
 
     # Create distributed zookeeper configuration
-    zookeeper_config = ('tickTime=2000\n',
-                        'dataDir=/zookeeper\n',
-                        'clientPort=2181\n',
-                        'initLimit=5\n',
+    zookeeper_config = ('tickTime=2000\n'
+                        'dataDir=/zookeeper\n'
+                        'clientPort=2181\n'
+                        'initLimit=5\n'
                         'syncLimit=2\n')
     for idx, node in enumerate(cluster):
         zookeeper_config += 'server.{}={}:2888:3888\n'.format(idx, node.hostname)
