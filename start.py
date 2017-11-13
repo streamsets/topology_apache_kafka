@@ -41,7 +41,7 @@ def validate_zookeeper(node, quiet):
 
 # Validate that Kafka is up by checking that all brokers are registered in zookeeper
 def validate_kafka(node, broker_count, quiet):
-    command = node.execute('/kafka/bin/zookeeper-shell.sh localhost:2181 ls /brokers/ids | tail -n 1', quiet=quiet)
+    command = node.execute('/kafka/bin/zookeeper-shell.sh localhost:2181 <<< "ls /brokers/ids" | tail -n 1', quiet=quiet)
 
     if command.exit_code != 0:
         return False
