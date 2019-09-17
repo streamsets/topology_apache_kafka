@@ -11,4 +11,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-/kafka/bin/zookeeper-server-start.sh /zookeeper.properties > /logs/zookeeper.log &
+/kafka/bin/zookeeper-server-start.sh /zookeeper.properties &> /logs/zookeeper.log &
