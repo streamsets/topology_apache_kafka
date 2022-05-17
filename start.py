@@ -46,7 +46,7 @@ def validate_kafka(node, broker_count, quiet):
     if command.exit_code != 0:
         return False
 
-    nodes = command.output
+    nodes = command.stdout
     if not nodes.startswith('['):
         return False
 
