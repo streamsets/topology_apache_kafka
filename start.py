@@ -63,11 +63,13 @@ def main(args):
                                                              args.scala_version)
 
     # Nodes in the Kafka cluster
+
     nodes = [Node(hostname=hostname,
                   group='brokers',
-                  ports=[ZOOKEEPER_PORT, BROKER_PORT],
+                  ports=[ZOOKEEPER_PORT if not args.zookeeper_ports else {args.zookeeper_ports.split(',')[idx]:ZOOKEEPER_PORT},
+                         BROKER_PORT if not args.cluster_ports else {args.cluster_ports.split(',')[idx]:BROKER_PORT}],
                   image=image)
-             for hostname in args.brokers]
+             for idx, hostname in enumerate(args.brokers)]
 
     cluster = Cluster(*nodes)
     cluster.start(args.network, pull_images=args.always_pull)
@@ -105,6 +107,9 @@ def main(args):
 
         kafka_config = node.get_file('/kafka/config/server.properties')
         kafka_config = kafka_config.replace('broker.id=0', 'broker.id={}'.format(idx))
+        if args.host_public_name and args.cluster_ports:
+            kafka_config += 'advertised.listeners=PLAINTEXT://{}:{}\n'.format(args.host_public_name,
+                                                                              args.cluster_ports.split(',')[idx])
         node.put_file('/kafka.properties', kafka_config)
 
         node.execute('/start_kafka &', detach=True)
