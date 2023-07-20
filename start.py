@@ -63,7 +63,6 @@ def main(args):
                                                              args.scala_version)
 
     # Nodes in the Kafka cluster
-
     nodes = [Node(hostname=hostname,
                   group='brokers',
                   ports=[ZOOKEEPER_PORT if not args.zookeeper_ports else {args.zookeeper_ports.split(',')[idx]:ZOOKEEPER_PORT},
