@@ -39,3 +39,12 @@ start args:
         default: test
         help: Comma-separated list of topics that should be auto-created
         metavar: topic1,topic2
+    --cluster-ports:
+        help: Comma-separated list of ports to be used to publish each broker cluster port
+        metavar: port1,port2
+    --zookeeper-ports:
+        help: Comma-separated list of ports to be used to publish each broker zookeeper port
+        metavar: port1,port2
+    --host-public-name:
+        help: The public name of the host machine
+        metavar: url

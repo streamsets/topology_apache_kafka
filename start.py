@@ -62,12 +62,25 @@ def main(args):
                                                              args.kafka_version,
                                                              args.scala_version)
 
+    if args.cluster_ports:
+        args.cluster_ports = args.cluster_ports.split(',')
+        if len(args.cluster_ports) != len(args.brokers):
+            raise Exception(('The amount of ports set on the --cluster-ports argument should be equal to the number'
+                             ' of brokers'))
+
+    if args.zookeeper_ports:
+        args.zookeeper_ports = args.zookeeper_ports.split(',')
+        if len(args.zookeeper_ports) != len(args.brokers):
+            raise Exception(('The amount of ports set on the --zookeeper-ports argument should be equal to the number'
+                             ' of brokers'))
+
     # Nodes in the Kafka cluster
     nodes = [Node(hostname=hostname,
                   group='brokers',
-                  ports=[ZOOKEEPER_PORT, BROKER_PORT],
+                  ports=[ZOOKEEPER_PORT if not args.zookeeper_ports else {args.zookeeper_ports[idx]:ZOOKEEPER_PORT},
+                         BROKER_PORT if not args.cluster_ports else {args.cluster_ports[idx]:BROKER_PORT}],
                   image=image)
-             for hostname in args.brokers]
+             for idx, hostname in enumerate(args.brokers)]
 
     cluster = Cluster(*nodes)
     cluster.start(args.network, pull_images=args.always_pull)
@@ -105,6 +118,9 @@ def main(args):
 
         kafka_config = node.get_file('/kafka/config/server.properties')
         kafka_config = kafka_config.replace('broker.id=0', 'broker.id={}'.format(idx))
+        if args.host_public_name and args.cluster_ports:
+            kafka_config += 'advertised.listeners=PLAINTEXT://{}:{}\n'.format(args.host_public_name,
+                                                                              args.cluster_ports[idx])
         node.put_file('/kafka.properties', kafka_config)
 
         node.execute('/start_kafka &', detach=True)
