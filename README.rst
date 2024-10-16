@@ -40,12 +40,12 @@ To see full usage instructions for the ``start`` action, use ``-h``/``--help``:
                             (default: False)
       --namespace ns        Namespace to use when looking for images (default:
                             None)
-      --network nw          Docker network to use (default: cluster)
+      --network nw          Container network to use (default: cluster)
       -o sys, --operating-system sys
                             Operating system to use for cluster nodes (default:
                             None)
       -r url, --registry url
-                            Docker Registry from which to pull images (default:
+                            Image registry from which to pull images (default:
                             docker.io)
       -h, --help            show this help message and exit
 
